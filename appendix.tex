@@ -1,0 +1,70 @@
+\chapter{Appendix}
+This part is placed in the appendix because it adds complexity and is not absolutely necessary to understand the main ideas on the interoperability. 
+
+\section{Trie}
+Binary merkle tree are used in bitcoin. 
+In Ethereum a more complicated version is used, derived from the patricia trie. First let's understand what a trie is. 
+\begin{figure}[H]
+    \centering
+\includegraphics[width=0.3\linewidth]{background/trie.png}
+    \caption{Trie representing the words "A", "to", "tea", "ted", "ten", "i", "in", and "inn"}
+    \label{fig:trie}
+\end{figure}
+A trie is a tree data structure where the key of the node is also his path from the root. The key is usually a string.
+In other words positions in the trie is determined directly from the key and the inverse is correct. 
+
+Let's say you want to save n words in the trie:
+\begin{enumerate}
+    \item From the root, at step 1 we take the first letter of each of the n words and create a leaf for each different ones. In the example from the figure above, we  take A from A, t from to, tea, ted, ten, i from i, in and inn. We have then 3 nodes from the root: t, A, i
+    \item at step t, repeat the first step but instead take the t first letters. 
+    \item stop when all the original words are in a leaf. 
+\end{enumerate}
+If we have a string with 200 letters, we'll have to create 200 levels.
+\subsection{Patricia trie}
+As said in the last section, if you have a n length word you'll have to create n levels, which is not optimized in term of storage. 
+Instead, radix tree and Patricia tree are a compressed version of the above trie.
+\begin{figure}[H]
+    \centering
+\includegraphics[width=0.4\linewidth]{background/patricia.png}
+    \caption{Patricia tree}
+    \label{fig:patricia}
+\end{figure}
+Here, we are not limited at each step in terms of length of the key.
+
+\section{Patricia merkle tree}
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=0.9\linewidth]{background/ethereum_mpt.png}
+    \caption{Ethereum patricia tree}
+    \label{fig:eth_mpt}
+\end{figure}
+
+The Patricia merkle tree used in Ethereum modifies the original Patricia tree. The keys are hexadecimal strings and defines 4 types of nodes: 
+\begin{itemize}
+    \item EmptyNode represented as the empty string
+    \item BranchNode: a 17-item node [ v0 ... v15, vt ]
+    \item LeafNode: a 2-item node [ encodedPath, value ]
+    \item ExtensionNode: a 2-item node [ encodedPath, key ]
+\end{itemize}
+A branch node at a certain step t, at letter t, is created when there are multiple possible letters for the next letter at $t+1$. Since we use hexadecimal keys, at each step we can choose between 16 letters (or the value).
+
+A leaf node is the last possible node in the branch and contains the value. Here we can say that the key represents the adress of the ethereum account and the value is the balance. 
+
+The extension node is the compression offered by the Patricia trie. It represents the shared nibbles (letter) before two or more words diverge. 
+
+
+
+Ethereum\cite{Buterin..13} stores three merkle roots in the block header. One for the transactions as in bitcoin, another one for the state (balances for example), and another one for the receipts. 
+
+\colorbox{lime}{
+These merkle trees allows Ethereum to answer more questions than just the inclusion of a transaction.
+}
+\begin{itemize}
+\item Has this transaction been included in a particular block?
+\item Tell me all instances of an event of type X (eg. a crowdfunding contract reaching its goal) emitted by this address in the past 30 days
+\item What is the current balance of my account?
+\item Does this account exist?
+\item Pretend to run this transaction on this contract. What would the output be?
+\end{itemize}
+

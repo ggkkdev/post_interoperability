@@ -1,0 +1,111 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage {graphics}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{dirtytalk}
+\usepackage{amsmath}
+\usepackage{biblatex}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{comment}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\addbibresource{sample.bib}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},  
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,    
+    frame=single,
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\textwidth}{6.25in} % original 6.25
+\setlength{\textheight}{8in}
+
+\usepackage[pagestyles]{titlesec}
+
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
+\newpagestyle{mystyle2}
+{\sethead[\thepage][][\chaptertitle]{}{}{\thepage}}
+\pagestyle{mystyle2}
+
+\newcommand\ytl[2]{
+\parbox[b]{8em}{\hfill{\color{black}\bfseries\sffamily #1}~$\cdots\cdots$~}\makebox[0pt][c]{$\bullet$}\vrule\quad \parbox[c]{10.5cm}{\vspace{7pt}\color{red!40!black!80}\raggedright\sffamily #2.\\[0pt]}\\[-3pt]}
+\renewcommand{\baselinestretch}{1.3}
+\renewcommand{\contentsname}{Plan}
+%\titleformat{\chapter}[display]{\normalfont\huge\bfseries\centering}
+%\newcommand{\cchapter}[1]{\chapter[#1]{\centering #1}}
+
+\oddsidemargin 20pt    %  Left margin on odd-numbered pages.
+\evensidemargin 20pt   %  Note that \oddsidemargin = \evensidemargin
+%\addtolength{\topmargin}{-.875in}
+\topmargin 0pt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{titlesec}
+
+\begin{document}
+
+\begin{titlepage}
+\input{cover}
+\end{titlepage}
+\pagenumbering{gobble}
+
+\newpage
+\tableofcontents
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pagestyle{headings}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{abstract}
+\input{background/background}
+\input{interoperability/interoperability}
+\newpage
+\printbibliography[title={Références}]
+\newpage
+\appendix
+\input{appendix}
+
+\end{document}
