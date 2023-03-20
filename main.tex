@@ -1,4 +1,5 @@
 \documentclass{report}
+\usepackage[pagestyles]{titlesec}
 \usepackage[utf8]{inputenc}
 \usepackage[margin=0.5in]{geometry}
 \usepackage {graphics}
@@ -20,7 +21,7 @@
 
 \addbibresource{sample.bib}
 
-
+\pagestyle{fancy}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -46,8 +47,6 @@
 }
 \lstset{style=mystyle}
 
-
-
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -59,12 +58,8 @@
 \setlength{\textwidth}{6.25in} % original 6.25
 \setlength{\textheight}{8in}
 
-\usepackage[pagestyles]{titlesec}
 
-\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
-\newpagestyle{mystyle2}
-{\sethead[\thepage][][\chaptertitle]{}{}{\thepage}}
-\pagestyle{mystyle2}
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{}{\Huge}
 
 \newcommand\ytl[2]{
 \parbox[b]{8em}{\hfill{\color{black}\bfseries\sffamily #1}~$\cdots\cdots$~}\makebox[0pt][c]{$\bullet$}\vrule\quad \parbox[c]{10.5cm}{\vspace{7pt}\color{red!40!black!80}\raggedright\sffamily #2.\\[0pt]}\\[-3pt]}

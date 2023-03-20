@@ -1,7 +1,8 @@
 \chapter{Appendix}
 This part is placed in the appendix because it adds complexity and is not absolutely necessary to understand the main ideas on the interoperability. 
 
-\section{Trie}
+\section{Merkle trees}
+\subsection{Trie}
 Binary merkle tree are used in bitcoin. 
 In Ethereum a more complicated version is used, derived from the patricia trie. First let's understand what a trie is. 
 \begin{figure}[H]
@@ -31,7 +32,7 @@ Instead, radix tree and Patricia tree are a compressed version of the above trie
 \end{figure}
 Here, we are not limited at each step in terms of length of the key.
 
-\section{Patricia merkle tree}
+\subsection{Patricia merkle tree}
 
 \begin{figure}[H]
     \centering
@@ -68,3 +69,38 @@ These merkle trees allows Ethereum to answer more questions than just the inclus
 \item Pretend to run this transaction on this contract. What would the output be?
 \end{itemize}
 
+
+\section{Zero knowledge}
+\label{zeroknowledge}
+This is meant to be a light introduction to the zero knowledge proof concept to understand the following interoperability solutions. 
+
+A zero-knowledge protocol is a method by which one party (the prover) can prove to another party (the verifier) that something is true, without revealing any information apart from the fact that this specific statement is true. \cite{Goldwasser}
+
+For example, in digital signature, you send a signature proving that you are indeed the one sending the mail. More precisely, this signature prove that you know the private key without revealing it. The verifier checks that the signature matches the public key of the sender. ( $\sim$ signature reveals the public key)
+\\Instead of only proving that you know the private key as in digital signatures, zero knowledge proofs can prove "any type" of computation. 
+\\For example, you can prove that: 
+\begin{itemize}
+    \item you know m when you send H=SHA3(m) to the verifier, without revealing m. 
+    \item you know a sudoku solution to a sudoku problem without revealing it 
+    \item you know the $1000^{th}$ fibonacci number ( $a_{n-2}+a_{n-1}=a_n$)
+    \item the transactions are valid. This allow the ZK roll-ups to process the transactions off chain, and prove on chain to layer 1 that these transactions are indeed valid. 
+\end{itemize}
+
+In fact, zero knowledge proofs allow two properties. 
+
+\textbf{Computational integrity} prove that you have done the right computation, even when no one is watching. For example, in ZK-rollups the computational integrity is the main need and the privacy is not always/often taken into account. 
+
+\textbf{Privacy} with zero knowledge, you don't reveal anything about the statement. In Zerocash\cite{sasson2014zerocash}, the privacy is needed to ensure the confidentiality of the transactions. 
+
+
+\paragraph{} A zero knowledge protocol should verify:
+\begin{itemize}
+    \item \textbf{Completeness}: If the claim is valid, the verifier accepts the proof.
+\item \textbf{Soundness}: If the claim is invalid, the verifier should reject the proof with very high probability.
+
+\item \textbf{Zero-knowledge}: The verifier learns nothing about a statement beyond its validity or falsity 
+\end{itemize}
+
+To conclude, some important properties are expected from these protocols. We want of short proof in terms of size for example. We also want, and this is a fundamental requirement, a very fast verification. If the prover with a highly efficient computer computes the hash of a 200GB document, the verification should be very fast and consists in a much lighter computation than the prover one.
+
+This last requirement is at the heart of the zero knowledge research and explains the complexity of the techniques used.

@@ -9,7 +9,7 @@ In this chapter let's see how interoperability between blockchains can be achiev
 \section{Examples}
 So, now that we understand the merkle proofs, \textbf{how are they used in current interoperability solutions?}
 \\We present a rapid overview of some interesting solutions, the goal here is to understand where the merkle proofs step in and how they help achieving interoperability in these protocols, leaving many details uncovered to keep it simple.
-\subsection{LayerZero}
+\subsection{LayerZero \cite{zarick2021layerzero}}
 \begin{figure}[H]
     \centering
 \includegraphics[width=1.\linewidth]{interoperability/layerZero.png}
@@ -36,7 +36,7 @@ Chain B can then attest that the transaction has happened by verifying the proof
 If the oracle and the relayer collude, they can give a fake block header, and a proof working with that fake block. 
 
 
-\subsection{ZKBridge}
+\subsection{ZKBridge \cite{xie2022zkbridge}}
 \begin{figure}[H]
     \centering
 \includegraphics[width=0.8\linewidth]{interoperability/zkbridge.png}
@@ -44,15 +44,28 @@ If the oracle and the relayer collude, they can give a fake block header, and a 
     \label{fig:zkbridge}
 \end{figure}
 
+Zero knowledge proofs are introduced here: \ref{zeroknowledge}.
+
 So here, the gray part is ZKbridge.
 \\The most important part is done here by the relayers. 
 \begin{enumerate}
     \item The relayers contact the full nodes of blockchain C1 to get the last block header% $blkH_r$ following the $blkH_{r-1}$
-    \item the relayers generate a zero knowledge proof that a light client of the sender chain C1 accepted that block header
+    \item the relayers generate a zero knowledge proof that a light client of the sender chain C1 accepts that block header
     \item This proof is then sent to the ZKBridge updater contract of the receiving chain C2
     \item this updater contract verifies the ZK proof and adds it to its list of block headers if successfully verified.
     \item The application contract, anyone on C2 can call the public function GetHeader from the updater contract to get the header. 
 \end{enumerate}
+
+Zk bridge achieve interoperability by verifying the validity of the block header. The relayers do that in a indirect way : they prove by a zk proof that a light client of the source chain accepts this block header. 
+\\
+Let's understand what the acceptance of the light client means. 
+In ethereum, it means that: 
+\begin{itemize}
+    \item the status of the block header is finalized. Finality means that you can be sure it'll not be reverted. 
+    \item the sync committee, group of validators, have sufficient participants 
+    \item the aggregated signature is correct, meaning that the aggregator in Ethereum received enough votes and signed it.
+\end{itemize}
+
 
 \textbf{The security of the ZKbridge relies notably on the security of the light client of C1.} It's because the zero knowledge proof consists in proving that this light client accepts the block.
 \subsection{Telepathy}
@@ -60,13 +73,15 @@ So here, the gray part is ZKbridge.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{interoperability/telepathy.png}
-    \caption{Telepathy}
+    \caption{Telepathy workflow}
     \label{fig:telepathy}
 \end{figure}
 
 Telepathy is based on proof of consensus. It means that to prove that a block header from blockchain A is valid, it will basically check that a large majority of the validators signed the block header. But verifying all these signatures one by one is computationally expensive. Instead the proof used in Telepathy is a zero knowledge proof attesting that the block header has been signed by a sufficient percentage of validators. 
 
-\textbf{The security of the Telepathy relies on the security of the underlying chain.}
-\subsection{Axelar}
+The zero knowledge proof can be cheaply verified onchain and chain B can then expose these verified blockheaders.
+The smart contract in chain B can then verify the merkle proof relayed by the Telepathy relayer against the verified block header 
 
-\subsection{Cosmos}
+\textbf{The security of the Telepathy relies directly on the honesty of the Ethereum validator set (sync committee validators).
+}
+
