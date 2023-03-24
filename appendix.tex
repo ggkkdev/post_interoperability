@@ -33,7 +33,7 @@ Instead, radix tree and Patricia tree are a compressed version of the above trie
 Here, we are not limited at each step in terms of length of the key.
 
 \subsection{Patricia merkle tree}
-
+\label{merkle:ethereum}
 \begin{figure}[H]
     \centering
 \includegraphics[width=0.9\linewidth]{background/ethereum_mpt.png}
@@ -57,17 +57,6 @@ The extension node is the compression offered by the Patricia trie. It represent
 
 
 Ethereum\cite{Buterin..13} stores three merkle roots in the block header. One for the transactions as in bitcoin, another one for the state (balances for example), and another one for the receipts. 
-
-\colorbox{lime}{
-These merkle trees allows Ethereum to answer more questions than just the inclusion of a transaction.
-}
-\begin{itemize}
-\item Has this transaction been included in a particular block?
-\item Tell me all instances of an event of type X (eg. a crowdfunding contract reaching its goal) emitted by this address in the past 30 days
-\item What is the current balance of my account?
-\item Does this account exist?
-\item Pretend to run this transaction on this contract. What would the output be?
-\end{itemize}
 
 
 \section{Zero knowledge}
