@@ -184,8 +184,8 @@ The root hash is a summary of all the transactions happening during that period 
 
 \subsection{Single payment verification}
 This allows two actors to emerge: \\
-\textbf{The full node} stores all the full blocks, with the transactions. With this transactions, it can provide the proof of inclusion: the hashes required to prove a transaction is in a particular block. \\
-\textbf{The light node } asks for the blocks headers to the full nodes of the network. Once he got the block headers, he can ask the full nodes of the network to provide a proof for the transactions is interested into. With the procedure described in \ref{merkle:inclusion}, the light node can verify that the transaction has indeed happened in the blockchain.
+\textbf{The full node} stores all the full blocks, with the transactions. With these transactions, it can provide the proof of inclusion: the hashes required to prove a transaction is in a particular block. \\
+\textbf{The light node } asks for the blocks headers to the full nodes of the network. Once he got the block headers, he can ask the full nodes of the network to provide a proof for the transactions is interested in. With the procedure described in \ref{merkle:inclusion}, the light node can verify that the transaction has indeed happened in the blockchain.
 
 The light node is only storing the block headers, so even a phone can handle the amount of storage needed. This allows for example to verify with your wallet that a transaction has been executed  on your laptop without downloading the $\sim 500$GB of the blockchain.
 
