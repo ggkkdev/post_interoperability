@@ -18,7 +18,10 @@
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-
+\usepackage{tikz}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta}
+\usepackage{tikz-qtree}
 \addbibresource{sample.bib}
 
 \pagestyle{fancy}
@@ -76,11 +79,12 @@
 %\usepackage{titlesec}
 
 \begin{document}
+%\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+%\usegdlibrary{trees}
 
 \begin{titlepage}
 \input{cover}
 \end{titlepage}
-\pagenumbering{gobble}
 
 \newpage
 \tableofcontents
