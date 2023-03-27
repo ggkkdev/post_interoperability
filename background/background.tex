@@ -18,9 +18,9 @@ A binary Merkle tree is the result of hashing  blockchain transaction two by two
     \item Repeat the last step until we obtain only one node left: the root.
 \end{enumerate}
 The root is a fingerprint of all the data, in our case the four transactions. 
-It means that if one changes anything in the original data, the timestamp of the first transaction, for example, it'll change completely the root hash of the Merkle tree, thanks to the non-locality property of the hash function used (Alice and Aline have very different hashes even if they have only one different letter)
+It means that if one changes anything in the original data, the timestamp of the first transaction, for example, it'll change completely the root hash of the Merkle tree, thanks to the non-locality property of the hash function used (Alice and Aline have very different hashes even if they have only one different letter). The security of Merkle trees relies on the collision resistance of their hash function.  
 
-To better understand this process, we'll take the example of a bitcoin Merkle tree for the block \href{https://www.blockchain.com/explorer/fr/explorer/blocks/btc/000000000000030de89e7729d5785c4730839b6e16ea9fb686a54818d3860a8d}{170 861}:
+To better understand this process, we'll take the example of a bitcoin Merkle tree for the block \href{https://blockchair.com/bitcoin/block/170861}{170 861}:
 
 \begin{figure}[H]
     \centering
@@ -195,40 +195,6 @@ The extension node is the compression offered by the Patricia trie. It represent
 
 Ethereum~\cite{Buterin..13} stores three Merkle roots in the block header: one for the transactions, as in Bitcoin, another one for the state (balances for example), and another one for the receipts. 
 
-\section{Zero knowledge}
-\label{zeroknowledge}
-This section is meant to be a light introduction to the zero-knowledge-proof concept to understand interoperability solutions. 
-
-A zero-knowledge protocol is a method by which one party (the prover) can prove to another party (the verifier) that something is true, without revealing any information apart from the fact that this specific statement is true~\cite{Goldwasser}.
-
-For example, in the case of digital signatures, you send a signature proving that you are indeed the one sending the mail. More precisely, this signature proves that you know the private key without revealing it. The verifier checks that the signature matches the public key of the sender ($\sim$ the signature reveals the public key)
-
-Instead of only proving that you know the private key as in digital signatures, zero-knowledge proofs can prove "any type" of computation. For example, you can prove that: 
-\begin{itemize}
-    \item you know $m$ such that $SHA_3(m)=0$ to the verifier, without revealing $m$; 
-    \item you know a sudoku solution to a sudoku problem without revealing it;
-    \item you know the $1000^{th}$ Fibonacci number (defined by the suite $a_{n-2}+a_{n-1}=a_n$);
-    \item some transactions are valid, thus allowing for instance ZK roll-ups to process transactions off chain, and prove on-chain to Layer 1 that these transactions are indeed valid. 
-\end{itemize}
-
-In fact, zero-knowledge (ZK) proofs can offer computational integrity and privacy (with zero knowledge). Privacy is not always necessary and ZK can be used only for the computational integrity property. 
-\begin{description}
-    \item[Computational integrity] proves that you have done the right computation, even when no one is watching. For example, in ZK rollups,  computational integrity is the main need, and the privacy is not always/often taken into account.
-    \item[Privacy] with zero knowledge ensures thaty you don't reveal anything about the statement. In Zerocash~\cite{sasson2014zerocash}, privacy is needed to ensure the confidentiality of the transactions.
-\end{description}
-
-A zero-knowledge protocol should verify the following properties.
-\begin{description}
-    \item[Completeness] If the claim is valid, the verifier accepts the proof.
-\item[Soundness] If the claim is invalid, the verifier should reject the proof with very high probability.
-
-\item[Zero-knowledge] The verifier learns nothing about a statement beyond its validity or falsity.
-\end{description}
-
-To conclude, some important properties are expected from these protocols. We want  short proofs in terms of size, for example. We also want, and this is a fundamental requirement, very fast verifications. If the prover with a highly efficient computer computes the hash of a 200GB document, the verification should be very fast and consists in a much lighter computation than the prover's one.
-
-This last requirement is at the heart of the zero-knowledge research and explains the complexity of the techniques used.
-
 
 \section{Blockchain basics}
 
@@ -307,3 +273,39 @@ Instead, a light client can ask a trusted source for header that is not in the u
 
 We recall that the Ethereum 2.0 has a sync committee of 512 validators randomly chosen every 27 hours; it is responsible for signing every block header during that period. If at least 2/3 of the validators sign a given block header, the block is considered finalized and the network state is valid. 
 This last consideration is important for the solutions presented in the next chapter.
+
+
+
+\section{Zero knowledge}
+\label{zeroknowledge}
+This section is meant to be a light introduction to the zero-knowledge-proof concept to understand interoperability solutions. 
+
+A zero-knowledge protocol is a method by which one party (the prover) can prove to another party (the verifier) that something is true, without revealing any information apart from the fact that this specific statement is true~\cite{Goldwasser}.
+
+For example, in the case of digital signatures, you send a signature proving that you are indeed the one sending the mail. More precisely, this signature proves that you know the private key without revealing it. The verifier checks that the signature matches the public key of the sender ($\sim$ the signature reveals the public key)
+
+Instead of only proving that you know the private key as in digital signatures, zero-knowledge proofs can prove "any type" of computation. For example, you can prove that: 
+\begin{itemize}
+    \item you know $m$ such that $SHA_3(m)=0$ to the verifier, without revealing $m$; 
+    \item you know a sudoku solution to a sudoku problem without revealing it;
+    \item you know the $1000^{th}$ Fibonacci number (defined by the suite $a_{n-2}+a_{n-1}=a_n$);
+    \item some transactions are valid, thus allowing for instance ZK roll-ups to process transactions off chain, and prove on-chain to Layer 1 that these transactions are indeed valid. 
+\end{itemize}
+
+In fact, zero-knowledge (ZK) proofs can offer computational integrity and privacy (with zero knowledge). Privacy is not always necessary and ZK can be used only for the computational integrity property. 
+\begin{description}
+    \item[Computational integrity] proves that you have done the right computation, even when no one is watching. For example, in ZK rollups,  computational integrity is the main need, and the privacy is not always/often taken into account.
+    \item[Privacy] with zero knowledge ensures thaty you don't reveal anything about the statement. In Zerocash~\cite{sasson2014zerocash}, privacy is needed to ensure the confidentiality of the transactions.
+\end{description}
+
+A zero-knowledge protocol should verify the following properties.
+\begin{description}
+    \item[Completeness] If the claim is valid, the verifier accepts the proof.
+\item[Soundness] If the claim is invalid, the verifier should reject the proof with very high probability.
+
+\item[Zero-knowledge] The verifier learns nothing about a statement beyond its validity or falsity.
+\end{description}
+
+To conclude, some important properties are expected from these protocols. We want  short proofs in terms of size, for example. We also want, and this is a fundamental requirement, very fast verifications. If the prover with a highly efficient computer computes the hash of a 200GB document, the verification should be very fast and consists in a much lighter computation than the prover's one.
+
+This last requirement is at the heart of the zero-knowledge research and explains the complexity of the techniques used.
